@@ -26,30 +26,30 @@ app.get("/api/hello", function (req, res) {
 
 
 
+
 app.get("/api/timestamp/:date_string?", (req, res) => {
   var userTime = req.params.date_string;
   var unix = "";
   var utc = "";
-  
+  var jsonObj = {unix: unix, utc: utc}
  if (!userTime || 0 === userTime.length) {
     console.log("Empty")
-    unix = new Date().getTime();
-    utc = new Date().toUTCString();
+    jsonObj.unix = new Date().getTime();
+    jsonObj.utc = new Date().toUTCString();
     
   } else if(!isNaN(Number(userTime))) {
       console.log('integer')
-      utc = new Date(parseInt(userTime)).toUTCString();
-      unix = new Date(parseInt(userTime)).getTime();
+      jsonObj.utc = new Date(parseInt(userTime)).toUTCString();
+      jsonObj.unix = new Date(parseInt(userTime)).getTime();
   } else if (Date.parse(new Date(userTime))) {
       console.log('date')
-      utc = new Date(userTime).toUTCString();
-      unix = new Date(userTime).getTime();
+      jsonObj.utc = new Date(userTime).toUTCString();
+      jsonObj.unix = new Date(userTime).getTime();
   } else {
-    unix = 'error';
-    utc = 'Invalid Date';
+    console.log("ERROR")
+    jsonObj = {"error": "Invalid Date"}
   }
-  res.send({ unix: unix, utc: utc });
-  console.log(Date.parse(new Date('100000')))
+  res.send(jsonObj);
   });
 
 // listen for requests :)
