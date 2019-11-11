@@ -33,21 +33,16 @@ app.get("/api/timestamp/:date_string?", (req, res) => {
   var utc = "";
   var jsonObj = {unix: unix, utc: utc}
  if (!userTime || 0 === userTime.length) {
-    console.log("Empty")
     jsonObj.unix = new Date().getTime();
     jsonObj.utc = new Date().toUTCString();
-    
   } else if(!isNaN(Number(userTime))) {
-      console.log('integer')
       jsonObj.utc = new Date(parseInt(userTime)).toUTCString();
       jsonObj.unix = new Date(parseInt(userTime)).getTime();
   } else if (Date.parse(new Date(userTime))) {
-      console.log('date')
       jsonObj.utc = new Date(userTime).toUTCString();
       jsonObj.unix = new Date(userTime).getTime();
   } else {
-    console.log("ERROR")
-    jsonObj = {"error": "Invalid Date"}
+    jsonObj = {error:"Invalid Date"};
   }
   res.send(jsonObj);
   });
